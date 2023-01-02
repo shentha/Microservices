@@ -4,6 +4,7 @@ import com.example.demo.productservice.model.Inventory;
 import com.example.demo.productservice.model.Price;
 import com.example.demo.productservice.model.Product;
 import com.example.demo.productservice.model.ProductInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
