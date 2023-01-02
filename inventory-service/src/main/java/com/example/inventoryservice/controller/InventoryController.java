@@ -20,8 +20,8 @@ public class InventoryController {
 
 
     @GetMapping("/inventory/{productid}")
-    public Mono<Inventory> getInventoryInfo(@PathVariable( name = "productid") Long productId){
-        Mono<Inventory> inventory = Mono.just( getInventory( productId ).orElseThrow( ()-> new RuntimeException("Id not found")));
+    public  Inventory getInventoryInfo(@PathVariable( name = "productid") Long productId){
+        Inventory inventory =  getInventory( productId ).orElseThrow( ()-> new RuntimeException("Id not found"));
         return inventory;
     }
 

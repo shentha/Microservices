@@ -1,30 +1,43 @@
 package com.example.pricingservice.controller;
 
 
+import com.example.pricingservice.model.Exchange;
 import com.example.pricingservice.model.Price;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import org.springframework.web.client.RestTemplate;
 import reactor.core.publisher.Mono;
 
 @RestController
 public class PricingController {
     List<Price> priceList = new ArrayList<Price>();
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     {
         loadPriceList();
     }
 
     @GetMapping("/price/{productid}")
-    public Mono<Price> getProductInfo(@PathVariable( name = "productid") Long productId){
-        Mono<Price> price = Mono.just( getPriceInfo( productId ).orElseThrow( ()-> new RuntimeException("Id not found")));
-        return price;
-    }
+    public Price getPriceDetails(@PathVariable Long productid) {
+        Price price = getPriceInfo(productid).orElseThrow(()->new NoSuchElementException("Id not found"));
 
+        // Get Exchange Value  /currexchng/{from}/{to}
+        Double exgVal = restTemplate.getForObject("http://localhost:8004/currexchng/USD/YEN", Exchange.class)
+                .getExchangeValue();
+
+        return new Price(price.getPriceId(), price.getProductID(), price.getOriginalPrice(),
+                (int)(exgVal*price.getDiscountedPrice()));
+    }
     private Optional<Price> getPriceInfo(Long productid) {
         return priceList.stream().filter(p -> p.getProductID() == productid ).findAny();
     }
