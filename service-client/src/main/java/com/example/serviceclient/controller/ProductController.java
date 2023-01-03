@@ -1,14 +1,13 @@
-package com.example.demo.productservice.controller;
+package com.example.serviceclient.controller;
 
-import com.example.demo.productservice.model.Inventory;
-import com.example.demo.productservice.model.Price;
-import com.example.demo.productservice.model.Product;
-import com.example.demo.productservice.model.ProductInfo;
+import com.example.serviceclient.model.Inventory;
+import com.example.serviceclient.model.Price;
+import com.example.serviceclient.model.Product;
+import com.example.serviceclient.model.ProductInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
