@@ -19,7 +19,8 @@ public class PricingController {
     List<Price> priceList = new ArrayList<Price>();
 
     @Autowired
-    private RestTemplate restTemplate;
+    ExchangeClient exchangeClient;
+
 
     {
         loadPriceList();
@@ -30,8 +31,7 @@ public class PricingController {
         Price price = getPriceInfo(productid).orElseThrow(()->new NoSuchElementException("Id not found"));
 
         // Get Exchange Value  /currexchng/{from}/{to}
-        Double exgVal = restTemplate.getForObject("http://localhost:8004/currexchng/USD/YEN", Exchange.class)
-                .getExchangeValue();
+        Double exgVal = exchangeClient.getExchangeInfo( "USD","YEN").getExchangeValue() ;
 
         return new Price(price.getPriceId(), price.getProductID(), price.getOriginalPrice(),
                 (int)(exgVal*price.getDiscountedPrice()));

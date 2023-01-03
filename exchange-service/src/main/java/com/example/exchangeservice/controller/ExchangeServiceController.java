@@ -2,6 +2,7 @@ package com.example.exchangeservice.controller;
 
 import com.example.exchangeservice.model.Currencies;
 import com.example.exchangeservice.model.Exchange;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,8 @@ import java.util.Optional;
 @RestController
 public class ExchangeServiceController {
     List<Exchange> exchangeList = new ArrayList<Exchange>();
+
+
 
     {
         loadExchangeList();

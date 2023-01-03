@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient( value = "price-client", url = "http://localhost:8002")
+@FeignClient( name = "price-service" )
 public interface PriceClient {
     @GetMapping("/price/{productid}")
     public  Price getProductInfo(@PathVariable( name = "productid") Long productId);
