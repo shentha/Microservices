@@ -4,6 +4,7 @@ import com.example.demo.productservice.model.Inventory;
 import com.example.demo.productservice.model.Price;
 import com.example.demo.productservice.model.Product;
 import com.example.demo.productservice.model.ProductInfo;
+import com.netflix.discovery.EurekaClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,9 @@ public class ProductController {
     @Autowired
     InventoryClient inventoryClient;
 
+    @Autowired
+    private EurekaClient eurekaClient;
+
     {
         loadProductList();
     }
@@ -36,6 +40,9 @@ public class ProductController {
 
     @GetMapping("/products/{productid}")
     public Product getProductDetails(@PathVariable Long productid) {
+
+        System.out.println( "Apps List : " +  eurekaClient.getApplications().getRegisteredApplications() );
+
         // Get Name and Desc from product-service
         ProductInfo productInfo = getProductInfo(productid).orElseThrow(()->new NoSuchElementException("Id not found"));
 
