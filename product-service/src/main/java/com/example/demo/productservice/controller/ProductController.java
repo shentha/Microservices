@@ -39,10 +39,16 @@ public class ProductController {
         loadProductList();
     }
 
-
     public void ProductController(){
         loadProductList();
     }
+
+
+    @GetMapping("/products/port")
+    public String getPortInfo(){
+        return inventoryClient.getInventoryDetails();
+    }
+
 
     @GetMapping("/products/{productid}")
     public Product getProductDetails(@PathVariable Long productid) {
@@ -56,15 +62,15 @@ public class ProductController {
         Price price = priceClient.getProductInfo( productid );
 
         /* Create instance of your API */
-        PriceClientReactive priceClient  =
+        /*PriceClientReactive priceClient2  =
                 WebReactiveFeign  //WebClient based reactive feign
                         //JettyReactiveFeign //Jetty http client based
                         //Java11ReactiveFeign //Java 11 http client based
                         .<PriceClientReactive>builder()
                         .target(PriceClientReactive.class, url);
 
-        /* Execute nonblocking requests */
-        Mono<Price> price2 = priceClient.getProductInfo( productid );
+        // Execute nonblocking requests
+        Mono<Price> price2 = priceClient2.getProductInfo( productid );*/
         
         // Get Stock Avail from inventory-service
         Inventory inventory = inventoryClient.getInventoryInfo( productid );

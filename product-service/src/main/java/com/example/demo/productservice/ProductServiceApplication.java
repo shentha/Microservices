@@ -6,8 +6,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import reactivefeign.spring.config.EnableReactiveFeignClients;
 
 @SpringBootApplication
-//@EnableFeignClients
-@EnableReactiveFeignClients
+@EnableFeignClients
+//@EnableReactiveFeignClients
 public class ProductServiceApplication {
 
     public static void main(String[] args) {

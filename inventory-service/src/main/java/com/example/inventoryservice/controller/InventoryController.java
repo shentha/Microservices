@@ -1,6 +1,7 @@
 package com.example.inventoryservice.controller;
 
 import com.example.inventoryservice.model.Inventory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,11 +14,17 @@ import reactor.core.publisher.Mono;
 @RestController
 public class InventoryController {
     List<Inventory> inventoryList = new ArrayList<Inventory>();
+    @Value( "${server.port}")
+    private String port;
 
     {
         loadInventoryList();
     }
 
+    @GetMapping ("/inventory/port")
+    public String getInventoryDetails(){
+        return port;
+    }
 
     @GetMapping("/inventory/{productid}")
     public  Inventory getInventoryInfo(@PathVariable( name = "productid") Long productId){
