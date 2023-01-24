@@ -6,10 +6,13 @@ import com.example.demo.productservice.model.Product;
 import com.example.demo.productservice.model.ProductInfo;
 import com.netflix.discovery.EurekaClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import reactivefeign.webclient.WebReactiveFeign;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,9 @@ public class ProductController {
 
     @Autowired
     private EurekaClient eurekaClient;
+
+    @Value( "${eureka.client.service-url.defaultZone}")
+    String url ;
 
     {
         loadProductList();
@@ -49,6 +55,17 @@ public class ProductController {
         // Get Price from pricing-service
         Price price = priceClient.getProductInfo( productid );
 
+        /* Create instance of your API */
+        PriceClientReactive priceClient  =
+                WebReactiveFeign  //WebClient based reactive feign
+                        //JettyReactiveFeign //Jetty http client based
+                        //Java11ReactiveFeign //Java 11 http client based
+                        .<PriceClientReactive>builder()
+                        .target(PriceClientReactive.class, url);
+
+        /* Execute nonblocking requests */
+        Mono<Price> price2 = priceClient.getProductInfo( productid );
+        
         // Get Stock Avail from inventory-service
         Inventory inventory = inventoryClient.getInventoryInfo( productid );
 
