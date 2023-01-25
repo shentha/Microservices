@@ -7,7 +7,7 @@ import reactivefeign.spring.config.EnableReactiveFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients
-//@EnableReactiveFeignClients
+@EnableReactiveFeignClients
 public class ProductServiceApplication {
 
     public static void main(String[] args) {
