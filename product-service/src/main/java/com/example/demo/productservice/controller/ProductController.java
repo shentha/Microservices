@@ -62,7 +62,7 @@ public class ProductController {
         Price price = priceClient.getProductInfo( productid );
 
         /* Create instance of your API */
-        PriceClientReactive priceClient2  =
+       /* PriceClientReactive priceClient2  =
                 WebReactiveFeign  //WebClient based reactive feign
                         //JettyReactiveFeign //Jetty http client based
                         //Java11ReactiveFeign //Java 11 http client based
@@ -71,7 +71,7 @@ public class ProductController {
 
         // Execute nonblocking requests
         Mono<Price> price2 = priceClient2.getProductInfo( productid );
-        
+        price2.subscribe(priceMono -> System.out.println(priceMono.getProductID()));*/
         // Get Stock Avail from inventory-service
         Inventory inventory = inventoryClient.getInventoryInfo( productid );
 
