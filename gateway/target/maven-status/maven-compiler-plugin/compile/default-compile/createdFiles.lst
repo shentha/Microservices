@@ -1,2 +1,4 @@
-org\example\Main.class
 org\example\config\SpringCloudConfig.class
+org\example\Main.class
+org\example\demo\MyCustomFilter$Config.class
+org\example\demo\MyCustomFilter.class
