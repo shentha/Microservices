@@ -4,7 +4,10 @@ import com.example.demo.productservice.model.Inventory;
 import com.example.demo.productservice.model.Price;
 import com.example.demo.productservice.model.Product;
 import com.example.demo.productservice.model.ProductInfo;
+import com.example.demo.productservice.service.ProductService;
 import com.netflix.discovery.EurekaClient;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +25,9 @@ import java.util.Optional;
 @RestController
 public class ProductController {
     List<ProductInfo> productInfoList = new ArrayList<ProductInfo>();
+
+    @Autowired
+    ProductService productService;
 
     @Autowired
     PriceClient priceClient;
@@ -50,6 +56,8 @@ public class ProductController {
     }
 
 
+    @HystrixProperty( name = "execution.isolation.thread.timeoutInMilliseconds", value="2000")
+    @HystrixCommand( fallbackMethod = "fallbackMethod")
     @GetMapping("/products/{productid}")
     public Product getProductDetails(@PathVariable Long productid) {
 
@@ -58,27 +66,22 @@ public class ProductController {
         // Get Name and Desc from product-service
         ProductInfo productInfo = getProductInfo(productid).orElseThrow(()->new NoSuchElementException("Id not found"));
 
+        RestTemplate restTemplate = new RestTemplate();
+
         // Get Price from pricing-service
-        Price price = priceClient.getProductInfo( productid );
+        Price price = restTemplate.getForObject( "http://localhost:8002/price/"+productid , Price.class);
 
-        /* Create instance of your API */
-       /* PriceClientReactive priceClient2  =
-                WebReactiveFeign  //WebClient based reactive feign
-                        //JettyReactiveFeign //Jetty http client based
-                        //Java11ReactiveFeign //Java 11 http client based
-                        .<PriceClientReactive>builder()
-                        .target(PriceClientReactive.class, url);
-
-        // Execute nonblocking requests
-        Mono<Price> price2 = priceClient2.getProductInfo( productid );
-        price2.subscribe(priceMono -> System.out.println(priceMono.getProductID()));*/
         // Get Stock Avail from inventory-service
-        Inventory inventory = inventoryClient.getInventoryInfo( productid );
+        Inventory inventory = restTemplate.getForObject("http://localhost:8005/inventory/"+productid, Inventory.class);
 
         return new Product(productInfo.getProductID(), productInfo.getProductName(), productInfo.getProductDesc(), price.getDiscountedPrice(),
                 inventory.getStock());
     }
 
+    public Product fallbackMethod(Long productid){
+        System.out.println( " In fallback method");
+        return new Product();
+    }
 
 
     private Optional<ProductInfo>  getProductInfo(Long productid) {
