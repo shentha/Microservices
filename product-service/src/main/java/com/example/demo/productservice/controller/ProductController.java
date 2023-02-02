@@ -56,7 +56,7 @@ public class ProductController {
     }
 
 
-    @HystrixProperty( name = "execution.isolation.thread.timeoutInMilliseconds", value="2000")
+    @HystrixProperty( name = "execution.isolation.thread.timeoutInMilliseconds", value="4000")
     @HystrixCommand( fallbackMethod = "fallbackMethod")
     @GetMapping("/products/{productid}")
     public Product getProductDetails(@PathVariable Long productid) {

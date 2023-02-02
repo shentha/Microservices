@@ -29,9 +29,6 @@ public class InventoryController {
     @GetMapping("/inventory/{productid}")
     public  Inventory getInventoryInfo(@PathVariable( name = "productid") Long productId) throws InterruptedException {
         Inventory inventory =  getInventory( productId ).orElseThrow( ()-> new RuntimeException("Id not found"));
-        if ( true ){
-            throw new RuntimeException();
-        }
         return inventory;
     }
 
