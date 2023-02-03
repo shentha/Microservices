@@ -41,6 +41,9 @@ public class ProductController {
     @Value( "${eureka.client.service-url.defaultZone}")
     String url ;
 
+    @Value( "${password}")
+    String password;
+
     {
         loadProductList();
     }
@@ -60,6 +63,7 @@ public class ProductController {
     @HystrixCommand( fallbackMethod = "fallbackMethod")
     @GetMapping("/products/{productid}")
     public Product getProductDetails(@PathVariable Long productid) {
+        System.out.println( "password: " + password );
 
         System.out.println( "Apps List : " +  eurekaClient.getApplications().getRegisteredApplications() );
 

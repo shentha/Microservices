@@ -94,6 +94,7 @@
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-cache:2.7.8" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context-support:5.3.25" level="project" />
     <orderEntry type="library" name="Maven: com.stoyanr:evictor:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-starter-bootstrap:3.1.5" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework.boot:spring-boot-starter-test:2.7.8" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter:2.7.8" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot:2.7.8" level="project" />
