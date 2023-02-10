@@ -10,6 +10,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@RefreshScope
 @RestController
 public class ProductController {
     List<ProductInfo> productInfoList = new ArrayList<ProductInfo>();
@@ -43,6 +45,8 @@ public class ProductController {
 
     @Value( "${password}")
     String password;
+    @Value( "${message}")
+    String message;
 
     {
         loadProductList();
@@ -63,7 +67,7 @@ public class ProductController {
     @HystrixCommand( fallbackMethod = "fallbackMethod")
     @GetMapping("/products/{productid}")
     public Product getProductDetails(@PathVariable Long productid) {
-        System.out.println( "password: " + password );
+        System.out.println( "message: " + message );
 
         System.out.println( "Apps List : " +  eurekaClient.getApplications().getRegisteredApplications() );
 
