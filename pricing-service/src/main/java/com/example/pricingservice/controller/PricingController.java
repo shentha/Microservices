@@ -3,6 +3,8 @@ package com.example.pricingservice.controller;
 
 import com.example.pricingservice.model.Exchange;
 import com.example.pricingservice.model.Price;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,7 @@ public class PricingController {
     @Autowired
     ExchangeClient exchangeClient;
 
+    private static Logger logger = LoggerFactory.getLogger(PricingController.class);
 
     {
         loadPriceList();
@@ -29,6 +32,8 @@ public class PricingController {
     @GetMapping("/price/{productid}")
     public Price getPriceDetails(@PathVariable Long productid) {
         Price price = getPriceInfo(productid).orElseThrow(()->new NoSuchElementException("Id not found"));
+
+        logger.info("Getting price details for {}", productid);
 
         // Get Exchange Value  /currexchng/{from}/{to}
         Double exgVal = exchangeClient.getExchangeInfo( "USD","YEN").getExchangeValue() ;
